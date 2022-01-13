@@ -17,7 +17,7 @@ public class Board {
 
     //Função para incluir novos barcos
     public boolean setBoat(int line, int column, boolean player){
-        //Variável que avisa se a operação foi um sucesso ou não(caso aquele dado já tenha sido preenchido)
+        //Variável que é retornada como true se a operação foi um sucesso ou false caso não(caso aquele dado já tenha sido preenchido)
         boolean success = true;
 
         if(player){
@@ -65,7 +65,6 @@ public class Board {
         while(count<10){
             int line = ThreadLocalRandom.current().nextInt(0, 10);
             int column = ThreadLocalRandom.current().nextInt(0, 10);
-            System.out.print("\n"+line+" ,"+column);
             if(setBoat(line,column,false)){
                 System.out.print("Foi!\n");
                 count++;
@@ -73,6 +72,7 @@ public class Board {
         }
     }
 
+    //Função para incluir navios do jogador
     public void playerShips(){
         Scanner scanner = new Scanner(System.in);
 
@@ -189,6 +189,18 @@ public class Board {
             System.out.println("|");
             //System.out.println("---------------------------------------------");
 
+        }
+    }
+
+    
+    public void cpuShoots(){
+        Boolean invalidShot = true;
+        while(invalidShot){
+            int line = ThreadLocalRandom.current().nextInt(0, 10);
+            int column = ThreadLocalRandom.current().nextInt(0, 10);
+            if(setShot(line,column,false)){
+                invalidShot=false;
+            }
         }
     }
 
