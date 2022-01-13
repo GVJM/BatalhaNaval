@@ -16,6 +16,8 @@ public class Board {
 
     private int cpuScore;
 
+    public Boolean playerIsWinner;
+
     //Lista de caracteres utilizados nas linhas da tabela
     final char[] linesLetters= {'A','B','C','D','E','F','G','H','I','J'};
 
@@ -253,6 +255,20 @@ public class Board {
         playerShips();
         
         cpuShips();
+
+        while(cpuScore<10||playerScore<10){
+            playerShoots();
+            if(playerScore>=10){
+                playerIsWinner=true;
+                break;
+            }
+            cpuShoots();
+            if(cpuScore>=10){
+                playerIsWinner=false;
+                break;
+            }
+
+        }
 
     }
 
