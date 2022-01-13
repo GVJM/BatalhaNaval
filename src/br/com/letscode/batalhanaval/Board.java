@@ -1,7 +1,5 @@
 package br.com.letscode.batalhanaval;
 
-import java.util.Arrays;
-import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -106,9 +104,13 @@ public class Board {
 
                             columnIndex= columnInput;
 
+                            //Realiza adição do valor. Caso a função retorne falso,
+                            //este espaço já fora preenchido e não iremos contar esta ação.
                             if(setBoat(lineIndex,columnIndex,true)){
                                 invalidColumn=false;
                                 count++;
+
+                                //Imprime próxima board
                                 printBoard();
                             }
                             else{
