@@ -12,6 +12,10 @@ public class Board {
     //Valor 1 significa que existe e 0 que não existe.
     private int[][][] boardArray = new int[10][10][4];
 
+    private int playerScore;
+
+    private int cpuScore;
+
     //Lista de caracteres utilizados nas linhas da tabela
     final char[] linesLetters= {'A','B','C','D','E','F','G','H','I','J'};
 
@@ -44,12 +48,18 @@ public class Board {
         if(player){
             if(boardArray[line][column][2]==0){
                 boardArray[line][column][2]=1;
+                if(boardArray[line][column][1]==1){
+                    playerScore++;
+                }
             }
             else{ success = false; }
         }
         else{
             if(boardArray[line][column][3]==0){
                 boardArray[line][column][3]=1;
+                if(boardArray[line][column][0]==1){
+                    cpuScore++;
+                }
             }
             else{ success = false; }
         }
@@ -192,7 +202,7 @@ public class Board {
         }
     }
 
-    
+    //Função de tiros do cpu
     public void cpuShoots(){
         Boolean invalidShot = true;
         while(invalidShot){
@@ -202,6 +212,27 @@ public class Board {
                 invalidShot=false;
             }
         }
+    }
+
+    //Função de interação com jogador para tiros
+    public void playerShoots(){
+        Scanner scanner = new Scanner(System.in);
+
+        Boolean validCoord = false;
+        while(!validCoord) {
+            System.out.println("Informe a linha do seu tiro: ");
+            int line = scanner.nextInt();
+
+            System.out.println("Informe a coluna do seu tiro: ");
+            int column = scanner.nextInt();
+            if(setShot(line,column,true)){
+                validCoord=true;
+            }
+            else{
+                System.out.println("Coordenada inválida, tente novamente.");
+            }
+        }
+
     }
 
     public void gameInit(){
@@ -215,6 +246,9 @@ public class Board {
                 boardArray[i][j][0]=0;
             }
         }
+
+        playerScore=0;
+        cpuScore=0;
 
         playerShips();
         
