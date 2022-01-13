@@ -78,7 +78,6 @@ public class Board {
             int line = ThreadLocalRandom.current().nextInt(0, 10);
             int column = ThreadLocalRandom.current().nextInt(0, 10);
             if(setBoat(line,column,false)){
-                System.out.print("Foi!\n");
                 count++;
             }
         }
@@ -202,6 +201,7 @@ public class Board {
             //System.out.println("---------------------------------------------");
 
         }
+        System.out.println("Placar:    [Jogador-"+playerScore+" | Computador-"+cpuScore+"]");
     }
 
     //Função de tiros do cpu
@@ -222,16 +222,51 @@ public class Board {
 
         Boolean validCoord = false;
         while(!validCoord) {
-            System.out.println("Informe a linha do seu tiro: ");
-            int line = scanner.nextInt();
 
-            System.out.println("Informe a coluna do seu tiro: ");
-            int column = scanner.nextInt();
-            if(setShot(line,column,true)){
-                validCoord=true;
+            int lineIndex;
+            int columnIndex;
+
+            System.out.print("Informe a linha do seu tiro (use somente letras maiúsculas): ");
+            char letterInput = scanner.next().charAt(0);
+
+            Boolean invalidLine = true;
+
+            for (int i = 0; i < linesLetters.length; i++) {
+                if( linesLetters[i] == letterInput ){
+                    lineIndex=i;
+                    invalidLine=false;
+                    boolean invalidColumn = true;
+
+                    while(invalidColumn){
+                        System.out.print("Informe a coluna do seu tiro (use somente números de 0 à 9): ");
+                        int columnInput = scanner.nextInt();
+
+                        if(0<=columnInput && columnInput<=9){
+
+                            columnIndex= columnInput;
+
+                            //Realiza adição do valor. Caso a função retorne falso,
+                            //este espaço já fora preenchido e não iremos contar esta ação.
+                            if(setShot(lineIndex,columnIndex,true)){
+                                invalidColumn=false;
+                                validCoord=true;
+
+                                //Imprime próxima board
+                                printBoard();
+                            }
+                            else{
+                                System.out.println("Coluna inválida.");
+                            }
+                        }
+                        else{
+                            System.out.println("Valor inválido, tente novamente.");
+                        }
+                    }
+                }
             }
-            else{
-                System.out.println("Coordenada inválida, tente novamente.");
+
+            if(invalidLine){
+                System.out.println("Valor inválido, tente novamente.");
             }
         }
 
@@ -255,7 +290,6 @@ public class Board {
         playerShips();
         
         cpuShips();
-
         while(cpuScore<10||playerScore<10){
             playerShoots();
             if(playerScore>=10){
