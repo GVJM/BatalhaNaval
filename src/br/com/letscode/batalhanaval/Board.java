@@ -16,6 +16,7 @@ public class Board {
 
     private int cpuScore;
 
+    //Variável booleana utilizada para personalizar a saída(print) da função gameEnding;
     public Boolean playerIsWinner;
 
     //Lista de caracteres utilizados nas linhas da tabela
@@ -122,7 +123,7 @@ public class Board {
                     if(j==0){
                         System.out.print("|||||| "+linesLetters[i]+" ");
                     }
-                    if(boardArray[i][j][0]==1){
+                    if(boardArray[i][j][1]==1){
                         System.out.print("| N ");
                     }
                     else{
@@ -227,9 +228,18 @@ public class Board {
                         boolean invalidColumn = true;
 
                         while(invalidColumn){
-                            System.out.printf("Informe a coluna do seu barco nº%d (use somente números de 0 à 9): ",(count+1));
-                            int columnInput = scanner.nextInt();
+                            int columnInput;
+                            while(true){
+                                try{
+                                    System.out.print("Informe a coluna do seu tiro (use somente números de 0 à 9): ");
+                                    columnInput = scanner.nextInt();
+                                    break;
 
+                                }catch (Exception e){
+                                    System.out.println("Valor inválido.");
+                                    scanner.next();
+                                }
+                            }
                             if(0<=columnInput && columnInput<=9){
 
                                 columnIndex= columnInput;
@@ -245,6 +255,7 @@ public class Board {
                                 }
                                 else{
                                     System.out.println("Coluna inválida.");
+                                    break;
                                 }
                             }
                             else{
@@ -389,6 +400,8 @@ public class Board {
         printBoard();
 
         while(cpuScore<10||playerScore<10){
+            playerScore=10;
+
             playerShoots();
             if(playerScore>=10){
                 playerIsWinner=true;
