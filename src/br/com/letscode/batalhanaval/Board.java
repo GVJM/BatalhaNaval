@@ -25,9 +25,14 @@ public class Board {
 
     //Função que imprime no console o tabuleiro do jogador
     public void printBoard(){
-
+        //O que é exibido durante o jogo
         if(playerScore<10 && cpuScore<10){
-            System.out.println("\n\n\n\n\n\n\n---------------------------------------------");
+            System.out.println("\n\n\n\n---------------------------------------------");
+            System.out.println("| N = Navio do jogador | * = Tiro certeiro  |");
+            System.out.println("| - = Tiro na água                          |");
+            System.out.println("| X = Tiro certeiro com navio posicionado   |");
+            System.out.println("| n = Tiro na água com navio posicionado    |");
+            System.out.println("---------------------------------------------");
             System.out.println("|                   JOGADOR                 |");
             System.out.println("---------------------------------------------");
             System.out.println("|   | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |");
@@ -202,9 +207,8 @@ public class Board {
         Scanner scanner = new Scanner(System.in);
 
         printBoard();
-        System.out.print("Caso queira inserir seus navios manualmente digite SIM(maiúsculo), caso contrário digite qualquer outro valor:");
-        String insercaoManual = scanner.next().trim();
-        System.out.println(insercaoManual.equals("SIM"));
+        System.out.print("Caso queira inserir seus navios manualmente digite SIM, caso contrário digite qualquer outro valor:");
+        String insercaoManual = scanner.next().trim().toUpperCase();
         if(insercaoManual.equals("SIM")){
             //Loop para inserção dos barcos do jogador
             int count = 0;
@@ -214,7 +218,7 @@ public class Board {
                 int columnIndex;
 
                 System.out.printf("Informe a linha do seu barco nº%d (use somente letras maiúsculas): ",(count+1));
-                char letterInput = scanner.next().charAt(0);
+                char letterInput = scanner.next().toUpperCase().charAt(0);
 
                 Boolean invalidLine = true;
 
@@ -287,8 +291,8 @@ public class Board {
             int lineIndex;
             int columnIndex;
 
-            System.out.print("Informe a linha do seu tiro (use somente letras maiúsculas): ");
-            char letterInput = scanner.next().charAt(0);
+            System.out.print("Informe a linha do seu tiro (use somente caracteres de A à J): ");
+            char letterInput = scanner.next().toUpperCase().charAt(0);
 
             Boolean invalidLine = true;
 
@@ -340,6 +344,7 @@ public class Board {
 
     }
 
+    //Função de exibição do fim do jogo, chamada quando um dos placares for 10
     public void gameEnding(){
 
         printBoard();
@@ -355,12 +360,13 @@ public class Board {
 
         System.out.println("Novo jogo (digite SIM ou NAO): ");
 
-        String novoJogo = scanner.next();
+        String novoJogo = scanner.next().toUpperCase();
         if(novoJogo.equals("SIM")){
             gameInit();
         }
     }
 
+    //Função de start do jogo
     public void gameInit(){
 
 
