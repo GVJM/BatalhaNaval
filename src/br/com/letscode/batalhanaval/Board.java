@@ -1,7 +1,5 @@
 package br.com.letscode.batalhanaval;
 
-import jdk.swing.interop.SwingInterOpUtils;
-
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -217,7 +215,7 @@ public class Board {
                 int lineIndex;
                 int columnIndex;
 
-                System.out.printf("Informe a linha do seu barco nº%d (use somente letras maiúsculas): ",(count+1));
+                System.out.printf("Informe a linha do seu barco nº%d: ",(count+1));
                 char letterInput = scanner.next().toUpperCase().charAt(0);
 
                 Boolean invalidLine = true;
@@ -328,6 +326,7 @@ public class Board {
                             }
                             else{
                                 System.out.println("Coluna inválida.");
+                                break;
                             }
                         }
                         else{
