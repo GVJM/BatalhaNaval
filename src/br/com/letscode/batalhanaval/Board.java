@@ -1,7 +1,6 @@
 package br.com.letscode.batalhanaval;
 
 import jdk.swing.interop.SwingInterOpUtils;
-
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
@@ -27,24 +26,32 @@ public class Board {
 
     //Função que imprime no console o tabuleiro do jogador
     public void printBoard(){
-        System.out.println("\n\n\n\n---------------------------------------------");
-        System.out.println("                   JOGADOR");
-        System.out.println("---------------------------------------------");
-        System.out.println("|   | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |");
-        //System.out.println("---------------------------------------------");
-        for (int i = 0; i < boardArray.length; ++i) {
+        //O que é exibido durante o jogo
+        if(playerScore<10 && cpuScore<10){
+            System.out.println("\n\n\n\n---------------------------------------------");
+            System.out.println("| N = Navio do jogador | * = Tiro certeiro  |");
+            System.out.println("| - = Tiro na água                          |");
+            System.out.println("| X = Tiro certeiro com navio posicionado   |");
+            System.out.println("| n = Tiro na água com navio posicionado    |");
+            System.out.println("---------------------------------------------");
+            System.out.println("|                   JOGADOR                 |");
+            System.out.println("---------------------------------------------");
+            System.out.println("|   | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |");
+            //System.out.println("---------------------------------------------");
+            for (int i = 0; i < boardArray.length; ++i) {
+                for(int j = 0; j < boardArray[i].length; ++j) {
 
-            System.out.print("| "+linesLetters[i]+" ");
-
-            for(int j = 0; j < boardArray[i].length; ++j) {
-
-                //Caso não haja navio do jogador ou ele foi atingido
-                if(boardArray[i][j][0] == 0 || (boardArray[i][j][0] == 1 && boardArray[i][j][3] == 1)) {
-
-                    //Caso não tenha tiro
-                    if (boardArray[i][j][2] == 0) {
-                        System.out.print("|   ");
+                    if(j==0){
+                        System.out.print("| "+linesLetters[i]+" ");
                     }
+
+                    //Caso não haja navio do jogador ou ele foi atingido
+                    if(boardArray[i][j][0] == 0 || (boardArray[i][j][0] == 1 && boardArray[i][j][3] == 1)) {
+
+                        //Caso não tenha tiro
+                        if (boardArray[i][j][2] == 0) {
+                            System.out.print("|   ");
+                        }
 
                     //Caso tenha tiro do jogador
                     else {
@@ -87,9 +94,51 @@ public class Board {
 
         }
         System.out.println("---------------------------------------------");
-
-        System.out.println("\nPlacar:    [Jogador-"+playerScore+" | Computador-"+cpuScore+"]\n");
     }
+        //Print de fim de jogo mostrando o tabuleiro do jogador e o do computador
+       else{
+
+        System.out.println("\n\n\n\n\n\n\n-----------------------------------------------------------------------------------------------");
+        System.out.println("|                   JOGADOR                 |||||||                COMPUTADOR                 |");
+        System.out.println("-----------------------------------------------------------------------------------------------");
+        System.out.println("|   | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |||||||   | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |");
+
+        for (int i = 0; i < boardArray.length; ++i) {
+
+            //Navios do Jogador
+            for(int j = 0; j < boardArray[i].length; ++j) {
+                if(j==0){
+                    System.out.print("| "+linesLetters[i]+" ");
+                }
+                if(boardArray[i][j][0]==1){
+                    System.out.print("| N ");
+                }
+                else{
+                    System.out.print("|   ");
+                }
+            }
+            System.out.print("|");
+
+            //Navios do computador
+            for(int j = 0; j < boardArray[i].length; ++j) {
+                if(j==0){
+                    System.out.print("|||||| "+linesLetters[i]+" ");
+                }
+                if(boardArray[i][j][0]==1){
+                    System.out.print("| N ");
+                }
+                else{
+                    System.out.print("|   ");
+                }
+            }
+            System.out.println("|");
+        }
+        System.out.println("-----------------------------------------------------------------------------------------------");
+
+    }
+
+    System.out.println("\nPlacar:    [Jogador-"+playerScore+" | Computador-"+cpuScore+"]\n");
+}
 
     //Função para incluir novos barcos
     public boolean setBoat(int line, int column, boolean player){
@@ -121,7 +170,7 @@ public class Board {
             if(boardArray[line][column][2]==0){
                 boardArray[line][column][2]=1;
                 if(boardArray[line][column][1]==1){
-                    playerScore++;
+                    ++playerScore;
                 }
             }
             else{ success = false; }
@@ -130,7 +179,7 @@ public class Board {
             if(boardArray[line][column][3]==0){
                 boardArray[line][column][3]=1;
                 if(boardArray[line][column][0]==1){
-                    cpuScore++;
+                    ++cpuScore;
                 }
             }
             else{ success = false; }
@@ -148,8 +197,7 @@ public class Board {
             int line = ThreadLocalRandom.current().nextInt(0, 10);
             int column = ThreadLocalRandom.current().nextInt(0, 10);
             if(setBoat(line,column,player)){
-                System.out.printf("[ %d , %d ] \n",line,column);
-                count++;
+                ++count;
             }
         }
     }
@@ -193,9 +241,8 @@ public class Board {
         Scanner scanner = new Scanner(System.in);
 
         printBoard();
-        System.out.print("Caso queira inserir seus navios manualmente digite SIM(maiúsculo), caso contrário digite qualquer outro valor:");
-        String insercaoManual = scanner.next().trim();
-        System.out.println(insercaoManual.equals("SIM"));
+        System.out.print("Caso queira inserir seus navios manualmente digite SIM, caso contrário digite qualquer outro valor:");
+        String insercaoManual = scanner.next().trim().toUpperCase();
         if(insercaoManual.equals("SIM")){
             //Loop para inserção dos barcos do jogador
             int count = 0;
@@ -237,7 +284,6 @@ public class Board {
             int line = ThreadLocalRandom.current().nextInt(0, 10);
             int column = ThreadLocalRandom.current().nextInt(0, 10);
             if(setShot(line,column,false)){
-                System.out.printf("[ %d , %d ] \n",line,column);
                 invalidShot=false;
             }
         }
@@ -264,7 +310,10 @@ public class Board {
 
     }
 
+    //Função de exibição do fim do jogo, chamada quando um dos placares for 10
     public void gameEnding(){
+
+        printBoard();
 
         if(playerIsWinner){
             System.out.println("Parabéns!!! Você venceu.");
@@ -277,12 +326,13 @@ public class Board {
 
         System.out.println("Novo jogo (digite SIM ou NAO): ");
 
-        String novoJogo = scanner.next();
+        String novoJogo = scanner.next().toUpperCase();
         if(novoJogo.equals("SIM")){
             gameInit();
         }
     }
 
+    //Função de start do jogo
     public void gameInit(){
 
 
@@ -302,6 +352,8 @@ public class Board {
         playerShips();
 
         randomShips(false);
+
+        printBoard();
 
         while(cpuScore<10||playerScore<10){
             playerShoots();
