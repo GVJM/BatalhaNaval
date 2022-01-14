@@ -25,66 +25,112 @@ public class Board {
 
     //Função que imprime no console o tabuleiro do jogador
     public void printBoard(){
-        System.out.println("\n\n\n\n---------------------------------------------");
-        System.out.println("                   JOGADOR");
-        System.out.println("---------------------------------------------");
-        System.out.println("|   | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |");
-        //System.out.println("---------------------------------------------");
-        for (int i = 0; i < boardArray.length; ++i) {
 
-            System.out.print("| "+linesLetters[i]+" ");
+        if(playerScore<10 && cpuScore<10){
+            System.out.println("\n\n\n\n\n\n\n---------------------------------------------");
+            System.out.println("|                   JOGADOR                 |");
+            System.out.println("---------------------------------------------");
+            System.out.println("|   | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |");
+            //System.out.println("---------------------------------------------");
+            for (int i = 0; i < boardArray.length; ++i) {
+                for(int j = 0; j < boardArray[i].length; ++j) {
 
-            for(int j = 0; j < boardArray[i].length; ++j) {
-
-                //Caso não haja navio do jogador ou ele foi atingido
-                if(boardArray[i][j][0] == 0 || (boardArray[i][j][0] == 1 && boardArray[i][j][3] == 1)) {
-
-                    //Caso não tenha tiro
-                    if (boardArray[i][j][2] == 0) {
-                        System.out.print("|   ");
+                    if(j==0){
+                        System.out.print("| "+linesLetters[i]+" ");
                     }
 
-                    //Caso tenha tiro do jogador
-                    else {
+                    //Caso não haja navio do jogador ou ele foi atingido
+                    if(boardArray[i][j][0] == 0 || (boardArray[i][j][0] == 1 && boardArray[i][j][3] == 1)) {
 
-                        //Tiro na água
-                        if (boardArray[i][j][1] == 0) {
-                            System.out.print("| - ");
+                        //Caso não tenha tiro
+                        if (boardArray[i][j][2] == 0) {
+                            System.out.print("|   ");
                         }
 
-                        //Tiro certeiro
+                        //Caso tenha tiro do jogador
+                        else {
+
+                            //Tiro na água
+                            if (boardArray[i][j][1] == 0) {
+                                System.out.print("| - ");
+                            }
+
+                            //Tiro certeiro
+                            else{
+                                System.out.print("| * ");
+                            }
+                        }
+                    }
+
+                    //Caso haja
+                    else{
+                        //Caso não haja tiro do jogador
+                        if(boardArray[i][j][2] == 0){
+                            System.out.print("| N ");
+                        }
+
+                        //Caso haja tiro do jogador
                         else{
-                            System.out.print("| * ");
+                            //Tiro na água
+                            if(boardArray[i][j][1]==0){
+                                System.out.print("| n ");
+                            }
+
+                            //Tiro certeiro
+                            else{
+                                System.out.print("| X ");
+                            }
                         }
                     }
                 }
+                System.out.println("|");
+                //System.out.println("---------------------------------------------");
 
-                //Caso haja
-                else{
-                    //Caso não haja tiro do jogador
-                    if(boardArray[i][j][2] == 0){
+            }
+            System.out.println("---------------------------------------------");
+        }
+
+        //Print de fim de jogo mostrando o tabuleiro do jogador e o do computador
+        else{
+
+            System.out.println("\n\n\n\n\n\n\n-----------------------------------------------------------------------------------------------");
+            System.out.println("|                   JOGADOR                 |||||||                COMPUTADOR                 |");
+            System.out.println("-----------------------------------------------------------------------------------------------");
+            System.out.println("|   | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |||||||   | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |");
+
+            for (int i = 0; i < boardArray.length; ++i) {
+
+                //Navios do Jogador
+                for(int j = 0; j < boardArray[i].length; ++j) {
+                    if(j==0){
+                        System.out.print("| "+linesLetters[i]+" ");
+                    }
+                    if(boardArray[i][j][0]==1){
                         System.out.print("| N ");
                     }
-
-                    //Caso haja tiro do jogador
                     else{
-                        //Tiro na água
-                        if(boardArray[i][j][1]==0){
-                            System.out.print("| n ");
-                        }
-
-                        //Tiro certeiro
-                        else{
-                            System.out.print("| X ");
-                        }
+                        System.out.print("|   ");
                     }
                 }
+                System.out.print("|");
+
+                //Navios do computador
+                for(int j = 0; j < boardArray[i].length; ++j) {
+                    if(j==0){
+                        System.out.print("|||||| "+linesLetters[i]+" ");
+                    }
+                    if(boardArray[i][j][0]==1){
+                        System.out.print("| N ");
+                    }
+                    else{
+                        System.out.print("|   ");
+                    }
+                }
+                System.out.println("|");
             }
-            System.out.println("|");
-            //System.out.println("---------------------------------------------");
+            System.out.println("-----------------------------------------------------------------------------------------------");
 
         }
-        System.out.println("---------------------------------------------");
 
         System.out.println("\nPlacar:    [Jogador-"+playerScore+" | Computador-"+cpuScore+"]\n");
     }
@@ -119,7 +165,7 @@ public class Board {
             if(boardArray[line][column][2]==0){
                 boardArray[line][column][2]=1;
                 if(boardArray[line][column][1]==1){
-                    playerScore++;
+                    ++playerScore;
                 }
             }
             else{ success = false; }
@@ -128,7 +174,7 @@ public class Board {
             if(boardArray[line][column][3]==0){
                 boardArray[line][column][3]=1;
                 if(boardArray[line][column][0]==1){
-                    cpuScore++;
+                    ++cpuScore;
                 }
             }
             else{ success = false; }
@@ -146,8 +192,7 @@ public class Board {
             int line = ThreadLocalRandom.current().nextInt(0, 10);
             int column = ThreadLocalRandom.current().nextInt(0, 10);
             if(setBoat(line,column,player)){
-                System.out.printf("[ %d , %d ] \n",line,column);
-                count++;
+                ++count;
             }
         }
     }
@@ -227,7 +272,6 @@ public class Board {
             int line = ThreadLocalRandom.current().nextInt(0, 10);
             int column = ThreadLocalRandom.current().nextInt(0, 10);
             if(setShot(line,column,false)){
-                System.out.printf("[ %d , %d ] \n",line,column);
                 invalidShot=false;
             }
         }
@@ -255,8 +299,18 @@ public class Board {
                     boolean invalidColumn = true;
 
                     while(invalidColumn){
-                        System.out.print("Informe a coluna do seu tiro (use somente números de 0 à 9): ");
-                        int columnInput = scanner.nextInt();
+                        int columnInput;
+                        while(true){
+                            try{
+                                System.out.print("Informe a coluna do seu tiro (use somente números de 0 à 9): ");
+                                columnInput = scanner.nextInt();
+                                break;
+
+                            }catch (Exception e){
+                                System.out.println("Valor inválido.");
+                                scanner.next();
+                            }
+                        }
 
                         if(0<=columnInput && columnInput<=9){
 
@@ -288,8 +342,10 @@ public class Board {
 
     public void gameEnding(){
 
+        printBoard();
+
         if(playerIsWinner){
-            System.out.println("Parabéns!!! Você venceu.");
+            System.out.println("\nParabéns!!! Você venceu.");
         }
         else{
             System.out.println("O computador venceu!");
@@ -324,6 +380,8 @@ public class Board {
         playerShips();
         
         randomShips(false);
+
+        printBoard();
 
         while(cpuScore<10||playerScore<10){
             playerShoots();
